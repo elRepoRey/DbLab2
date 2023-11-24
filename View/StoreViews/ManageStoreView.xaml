@@ -1,0 +1,122 @@
+﻿<UserControl x:Class="DbLab2.View.StoreViews.ManageStoreView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                xmlns:local="clr-namespace:DbLab2.ViewModels.StoreModels"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+       
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="2"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Width" Value="150"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Background" Value="#007ACC"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#005B9E"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="RemoveButtonStyle" TargetType="Button" BasedOn="{StaticResource ButtonStyle}">
+            <Setter Property="Background" Value="Red"/>
+        </Style>
+    </UserControl.Resources>
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="{Binding SelectedStore.StoreName}" FontWeight="Bold" FontSize="20" Margin="10" Foreground="#007ACC"/>
+        
+        <Grid Grid.Row="1" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+           
+            <StackPanel Grid.Column="0" Orientation="Vertical" Margin="10">
+                <TextBlock Text="Stock Balances" FontWeight="Bold" FontSize="16" Margin="5" Foreground="#007ACC"/>
+                <ListView ItemsSource="{Binding StoreStockBalances}"
+              SelectedItem="{Binding SelectedStockBalanceToRemove}"
+              Margin="5">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Title" Width="200">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <RadioButton Content="{Binding Book.Title}"
+                                         IsChecked="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}, Path=IsSelected}"
+                                         GroupName="StockBalancesGroup"
+                                         Margin="5"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="Quantity" Width="50">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Quantity}" Margin="10,0,0,0"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+
+                <TextBlock Text="Enter quantity to remove:" FontWeight="Bold" FontSize="16" Margin="5" Foreground="#007ACC"/>
+                <TextBox Width="50"
+             Text="{Binding QuantityToRemove, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+             ToolTip="Enter quantity to remove"
+             Margin="5"
+                     />
+
+                <Button Content="Remove from Store"
+            Command="{Binding RemoveBookFromStoreCommand}"
+            Style="{StaticResource RemoveButtonStyle}"
+            Margin="5,0" />
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Orientation="Vertical" Margin="10">
+                <TextBlock Text="Select a book to add to the store:" FontWeight="Bold" FontSize="16" Margin="5" Foreground="#007ACC"/>
+                <ListBox ItemsSource="{Binding AvailableBooks}"
+                     SelectedItem="{Binding SelectedBookToAdd}"
+                     Margin="5">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <RadioButton Content="{Binding Title}"
+                                     IsChecked="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected}"
+                                     GroupName="BooksGroup"
+                                     Margin="5" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+                <TextBox Width="50"
+                     ToolTip="Enter quantity to add"
+                     Margin="5">
+                    <TextBox.Text>
+                        <Binding Path="QuantityToAdd" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
+                            <Binding.ValidationRules>
+                                <local:PositiveIntegerValidationRule ValidatesOnTargetUpdated="True"/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+
+                <Button Content="Add to Store"
+                    Command="{Binding AddBookToStoreCommand}"
+                    Style="{StaticResource ButtonStyle}"
+                    Margin="5,0" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

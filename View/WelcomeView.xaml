@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="DbLab2.View.WelcomeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DbLab2.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Background="White" Margin="20">
+       
+  
+        <Border Background="#007ACC" Grid.Row="0" CornerRadius="10" Margin="0,70,0,236" Grid.RowSpan="2">
+            <TextBlock Text="Inventory Management" 
+                       HorizontalAlignment="Center" 
+                       VerticalAlignment="Center" 
+                       FontSize="48" 
+                       FontWeight="Bold" 
+                       Foreground="White" 
+                       Margin="20"/>
+        </Border>
+
+    </Grid>
+</UserControl>

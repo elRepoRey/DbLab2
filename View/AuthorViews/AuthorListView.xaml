@@ -1,0 +1,80 @@
+﻿<UserControl x:Class="DbLab2.View.AuthorViews.AuthorManagement"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:DbLab2.ViewModels.AuthorModels"
+             Width="Auto" Height="Auto">
+  
+
+    <UserControl.Resources>
+        <!-- Button Styles -->
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="2"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Width" Value="80"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Background" Value="#007ACC"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#005B9E"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="EditButtonStyle" TargetType="Button" BasedOn="{StaticResource ButtonStyle}">
+            <Setter Property="Background" Value="Green"/>
+        </Style>
+
+        <Style x:Key="DeleteButtonStyle" TargetType="Button" BasedOn="{StaticResource ButtonStyle}">
+            <Setter Property="Background" Value="Red"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Width="Auto">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Author List" FontWeight="Bold" FontSize="24" Margin="10" Grid.Row="0" Foreground="#007ACC"/>
+
+        <ListView Name="lstAuthors" ItemsSource="{Binding Authors}" Margin="10" Grid.Row="1">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="ID" Width="Auto" DisplayMemberBinding="{Binding ID}" />
+                    <GridViewColumn Header="First Name" Width="Auto" DisplayMemberBinding="{Binding FirstName}" />
+                    <GridViewColumn Header="Last Name" Width="Auto" DisplayMemberBinding="{Binding LastName}" />
+                    <GridViewColumn Header="Birth Date" Width="Auto" DisplayMemberBinding="{Binding BirthDate}" />
+                    <GridViewColumn Width="200">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <Button Content="Edit" 
+                                            Style="{StaticResource EditButtonStyle}"                                     
+                                            Command="{Binding Path=DataContext.EditAuthorCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                            CommandParameter="{Binding}" />
+                                    <Button Content="Delete" 
+                                            Style="{StaticResource DeleteButtonStyle}" 
+                                            Command="{Binding Path=DataContext.DeleteAuthorCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                            CommandParameter="{Binding}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <Button Content="Add New Author" 
+                Command="{Binding AddAuthorCommand}" 
+                HorizontalAlignment="Right" 
+                VerticalAlignment="Bottom" 
+                Width="200"
+                Margin="10" Grid.Row="2" 
+                Style="{StaticResource ButtonStyle}" />
+    </Grid>
+</UserControl>
